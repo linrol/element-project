@@ -2,7 +2,7 @@ var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
-  entry: path.join(__dirname, 'src/client/index.js'),
+  entry: path.join(__dirname, 'src/client/main.js'),
   output: {
     path: path.join(__dirname, 'src/server/public/javascripts/'),
     publicPath: '/javascripts/',
@@ -15,18 +15,6 @@ module.exports = {
     root: path.join(__dirname, 'node_modules')
   },
   module: {
-    preLoaders: [
-      {
-        test: /\.vue$/,
-        loader: 'eslint',
-        exclude: /node_modules/
-      },
-      {
-        test: /\.js$/,
-        loader: 'eslint',
-        exclude: /node_modules/
-      }
-    ],
     loaders: [
       {
         test: /\.js$/,

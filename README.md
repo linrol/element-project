@@ -21,7 +21,7 @@ Vue + Express boilerplate for development
 ├── package.json
 ├── src
 │   ├── client
-│   │   ├── App.vue
+│   │   ├── app.vue
 │   │   ├── components
 │   │   │   └── Hello.vue
 │   │   └── index.js
