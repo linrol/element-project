@@ -8,10 +8,14 @@ import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 
+var proxy = require('http-proxy-middleware');
+
 import router from './router'
 import config from '../../webpack.config'
 
 const app = express()
+
+app.use('/api', proxy({target: 'http://127.0.0.1:8080', changeOrigin: true}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))

@@ -14,14 +14,12 @@
         },
         methods: {
           init () {
-            this.$http({
-                url: '/RewardAction/getInfoListByAssId',
-                method: 'post',
-                data: null
+            this.$http.post('/TestController/testMethod',{
+                    property1: '1',
+                    property2: '2'
+
             }).then(res => {
-                if (res.success) {
-                } else {
-                }
+              console.log(res)
             });
           }
         }
