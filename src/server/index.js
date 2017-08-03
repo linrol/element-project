@@ -8,6 +8,8 @@ import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 
+var qs = require('qs');
+
 var proxy = require('http-proxy-middleware');
 
 import router from './router'
@@ -49,11 +51,8 @@ var proxy_options = {
     },
     onProxyReq(proxyReq, req, res) {
         if ( req.method == "POST" && req.body ) {
-            console.log(req.body);
-            let body = req.body;
-            body = Object.keys( body ).map(function( key ) {
-                return encodeURIComponent( key ) + '=' + encodeURIComponent( body[ key ])
-            }).join('&');
+            let body = qs.stringify(req.body);
+            console.log(body);
             proxyReq.setHeader( 'content-type', 'application/x-www-form-urlencoded' );
             proxyReq.setHeader( 'content-length', body.length );
             proxyReq.write( body );
@@ -62,8 +61,6 @@ var proxy_options = {
     }
 };
 app.use('/api', proxy( proxy_filter, proxy_options ));
-
-// app.use('/api', proxy({target: 'http://127.0.0.1:8080', changeOrigin: true}));
 
 app.use(webpackHotMiddleware(compiler))
 
