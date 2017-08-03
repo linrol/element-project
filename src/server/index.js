@@ -15,7 +15,6 @@ import config from '../../webpack.config'
 
 const app = express()
 
-app.use('/api', proxy({target: 'http://127.0.0.1:8080', changeOrigin: true}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -36,7 +35,39 @@ app.use(webpackDevMiddleware(compiler, {
   stats: { colors: true }
 }))
 
+var proxy_filter = function (path, req) {
+    return path.match('^/api') && ( req.method === 'GET' || req.method === 'POST' );
+};
+
+var proxy_options = {
+    target: 'http://127.0.0.1:8080',
+    onError(err, req, res) {
+        res.writeHead(500, {
+            'Content-Type': 'text/plain'
+        });
+        res.end('Something went wrong. And we are reporting a custom error message.' + err);
+    },
+    onProxyReq(proxyReq, req, res) {
+        if ( req.method == "POST" && req.body ) {
+            console.log(req.body);
+            let body = req.body;
+            body = Object.keys( body ).map(function( key ) {
+                return encodeURIComponent( key ) + '=' + encodeURIComponent( body[ key ])
+            }).join('&');
+            proxyReq.setHeader( 'content-type', 'application/x-www-form-urlencoded' );
+            proxyReq.setHeader( 'content-length', body.length );
+            proxyReq.write( body );
+            proxyReq.end();
+        }
+    }
+};
+app.use('/api', proxy( proxy_filter, proxy_options ));
+
+// app.use('/api', proxy({target: 'http://127.0.0.1:8080', changeOrigin: true}));
+
 app.use(webpackHotMiddleware(compiler))
+
+
 
 app.use('/', router)
 

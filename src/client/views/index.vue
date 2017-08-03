@@ -14,12 +14,13 @@
         },
         methods: {
           init () {
-            this.$http.post('/TestController/testMethod',{
-                    property1: '1',
-                    property2: '2'
-
+            this.$http.post('/api/TestController/testMethod',{
+              property1: '1',
+              property2: '2'
             }).then(res => {
               console.log(res)
+            }).catch(error => {
+              console.log(error)
             });
           }
         }
