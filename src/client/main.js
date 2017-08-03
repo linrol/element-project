@@ -9,7 +9,6 @@ import Routers from './router';
 import App from './app.vue'
 
 Vue.config.debug = true
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 Vue.prototype.$http = axios;
 
 Vue.use(VueRouter)
