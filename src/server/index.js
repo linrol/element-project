@@ -52,7 +52,6 @@ var proxy_options = {
     onProxyReq(proxyReq, req, res) {
         if ( req.method == "POST" && req.body ) {
             let body = qs.stringify(req.body);
-            console.log(body);
             proxyReq.setHeader( 'content-type', 'application/x-www-form-urlencoded' );
             proxyReq.setHeader( 'content-length', body.length );
             proxyReq.write( body );
